@@ -1,0 +1,17 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+PROFILE="argocd"
+
+echo "🚀 Starting Minikube cluster..."
+minikube status -p "$PROFILE" >/dev/null 2>&1 && {
+  echo "ℹ️  Minikube already running. Skipping start."
+  exit 0
+}
+
+minikube start -p "$PROFILE" \
+  --kubernetes-version=v1.30.0 \
+  --cpus=2 \
+  --memory=2048
+
+echo "✅ Minikube ready!"

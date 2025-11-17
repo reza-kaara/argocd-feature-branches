@@ -1,0 +1,19 @@
+version: '3'
+runner: bash
+
+tasks:
+  up:
+    desc: "Run Argo CD playground"
+    cmds:
+      - ./scripts/00-start-cluster.sh
+      - ./scripts/01-setup-cluster.sh
+      - ./scripts/02-setup-env.sh
+      - ./scripts/03-setup-argocd.sh
+      - ./scripts/04-setup-l7routing.sh
+      - ./scripts/05-expose-cloudflared.sh
+      - ./scripts/06-patch-argocd.sh
+      - ./scripts/07-print-info.sh
+  down:
+    desc: "Tear down everything"
+    cmds:
+      - ./scripts/1000-destroy.sh
