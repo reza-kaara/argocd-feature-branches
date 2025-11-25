@@ -35,8 +35,8 @@ echo "🚀 Installing or upgrading Argo CD (release: $RELEASE_NAME)..."
 helm upgrade --install "$RELEASE_NAME" "$HELM_REPO" \
   --namespace "$NAMESPACE" \
   --version "$HELM_VERSION" \
-  --set server.service.type=ClusterIP \
-  --set server.service.servicePort=443 \
+  --set server.metrics.enabled=true \
+  --set commitServer.enabled=true \
   --wait
 
 echo "🎉 Argo CD installed."

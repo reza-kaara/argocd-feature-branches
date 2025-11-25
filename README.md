@@ -41,6 +41,7 @@ Pretty cool for demos or experimenting with Gateway API + Envoy + TLS.
 
 Just run:
 ```
+cd bootstrap/
 task up
 ```
 
@@ -51,6 +52,7 @@ When it’s done, it prints your access info.
 # 🧹 How to Destroy Everything
 You can wipe out absolutely everything with:
 ```
+cd bootstrap/
 task down
 ```
 This command takes care of the entire cleanup process for you:

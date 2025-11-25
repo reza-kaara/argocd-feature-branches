@@ -2,9 +2,9 @@
 set -euo pipefail
 
 echo "📡 Applying Gateway API resources..."
-kubectl apply -f manifests/gateway.yaml
-kubectl apply -f manifests/httproute.yaml
-kubectl apply -f manifests/backendtlspolicy.yaml
+kubectl apply -f resources/gateway.yaml
+kubectl apply -f resources/httproute.yaml
+kubectl apply -f resources/backendtlspolicy.yaml
 echo "✅ Gateway applied."
 
 echo "⏳ Waiting for Gateway to be ready..."
