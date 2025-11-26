@@ -1,7 +1,7 @@
 apiVersion: argoproj.io/v1alpha1
 kind: ApplicationSet
 metadata:
-  name: petcare-preview
+  name: petcare-pr
   namespace: argocd
 spec:
   goTemplate: true
@@ -23,7 +23,7 @@ spec:
         path: charts/petcare
       destination:
         server: https://kubernetes.default.svc
-        namespace: 'petcare-preview-pr-{{ .number }}'
+        namespace: 'petcare-pr-{{ .number }}'
       syncPolicy:
         automated:
           prune: true
