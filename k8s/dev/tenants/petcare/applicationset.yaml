@@ -1,0 +1,32 @@
+apiVersion: argoproj.io/v1alpha1
+kind: ApplicationSet
+metadata:
+  name: tenant-preview-petcare
+  namespace: argocd
+spec:
+  goTemplate: true
+  generators:
+    - pullRequest:
+        github:
+          owner: rezakaramad
+          repo: petcare
+          appSecretName: github-app
+        requeueAfterSeconds: 120
+  template:
+    metadata:
+      name: 'tenant-preview-pr-{{ .number }}'
+    spec:
+      project: default
+      source:
+        repoURL: https://github.com/rezakaramad/petcare.git
+        targetRevision: '{{ .head_sha }}'
+        path: charts/petcare
+      destination:
+        server: https://kubernetes.default.svc
+        namespace: 'tenant-preview-pr-{{ .number }}'
+      syncPolicy:
+        automated:
+          prune: true
+          selfHeal: true
+        syncOptions:
+          - CreateNamespace=true
