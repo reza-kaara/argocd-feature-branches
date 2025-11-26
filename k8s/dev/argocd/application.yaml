@@ -12,16 +12,6 @@ spec:
     repoURL: https://github.com/rezakaramad/charts
     targetRevision: main
     path: charts/argo-cd
-    helm:
-      values: |
-        platform:
-          appsFolder:
-            repoURL: "https://github.com/rezakaramad/argocd-feature-branches"
-            targetRevision: "main"
-            path: "k8s"
-          permittedRepos:
-            - "https://github.com/rezakaramad/argocd-feature-branches"
-            - "https://github.com/rezakaramad/charts"
 
   syncPolicy:
     syncOptions:

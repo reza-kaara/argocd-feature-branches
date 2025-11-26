@@ -1,0 +1,31 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: plt-argocd-resources
+  namespace: argocd
+  labels:
+    cluster: minikube
+    app: argocd
+spec:
+  project: default
+  source:
+    repoURL: https://github.com/rezakaramad/charts
+    targetRevision: main
+    path: charts/argo-cd-resources
+    helm:
+      values: |
+        platform:
+          appsFolder:
+            repoURL: "https://github.com/rezakaramad/argocd-feature-branches"
+            targetRevision: "main"
+            path: "k8s"
+          permittedRepos:
+            - "https://github.com/rezakaramad/argocd-feature-branches"
+            - "https://github.com/rezakaramad/charts"
+  syncPolicy:
+    syncOptions:
+    - ApplyOutOfSyncOnly=true 
+
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: argocd
