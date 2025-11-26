@@ -23,7 +23,7 @@ spec:
         path: charts/petcare
       destination:
         server: https://kubernetes.default.svc
-        namespace: 'tenant-preview-pr-{{ .number }}'
+        namespace: 'petcare-preview-pr-{{ .number }}'
       syncPolicy:
         automated:
           prune: true
