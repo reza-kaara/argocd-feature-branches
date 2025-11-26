@@ -15,10 +15,13 @@ spec:
     helm:
       values: |
         platform:
-          source:
+          appsFolder:
             repoURL: "https://github.com/rezakaramad/argocd-feature-branches"
             targetRevision: "main"
             path: "k8s"
+          permittedRepos:
+            - "https://github.com/rezakaramad/argocd-feature-branches"
+            - "https://github.com/rezakaramad/charts"
 
   syncPolicy:
     syncOptions:

@@ -7,7 +7,7 @@ metadata:
     cluster: minikube
     app: argocd
 spec:
-  project: argocd-root
+  project: platform-infra
   source:
     repoURL: https://github.com/rezakaramad/charts
     targetRevision: main
