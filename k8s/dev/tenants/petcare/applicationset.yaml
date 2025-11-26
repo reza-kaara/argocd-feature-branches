@@ -1,29 +1,52 @@
 apiVersion: argoproj.io/v1alpha1
 kind: ApplicationSet
 metadata:
-  name: petcare-pr
+  name: petcare
   namespace: argocd
 spec:
   goTemplate: true
+
   generators:
+    - list:
+        elements:
+          - name: petcare
+            namespace: petcare
+            targetRevision: main
+        template:
+          metadata:
+            name: '{{ .name }}'
+          spec:
+            source:
+              targetRevision: '{{ .targetRevision }}'
+            destination:
+              namespace: '{{ .namespace }}'
+
     - pullRequest:
         github:
           owner: rezakaramad
           repo: petcare
           appSecretName: github-app
         requeueAfterSeconds: 120
+        template:
+          metadata:
+            name: 'petcare-pr-{{ .number }}'
+          spec:
+            source:
+              targetRevision: '{{ .head_sha }}'
+            destination:
+              namespace: 'petcare-pr-{{ .number }}'
+
   template:
     metadata:
-      name: 'petcare-pr-{{ .number }}'
+      labels:
+        app: petcare
     spec:
       project: default
       source:
         repoURL: https://github.com/rezakaramad/petcare.git
-        targetRevision: '{{ .head_sha }}'
         path: charts/petcare
       destination:
         server: https://kubernetes.default.svc
-        namespace: 'petcare-pr-{{ .number }}'
       syncPolicy:
         automated:
           prune: true
