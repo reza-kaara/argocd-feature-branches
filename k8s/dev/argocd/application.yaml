@@ -18,7 +18,7 @@ spec:
     - ApplyOutOfSyncOnly=true 
 
   destination:
-    name: https://kubernetes.default.svc
+    server: https://kubernetes.default.svc
     namespace: argocd
 
   ignoreDifferences:
