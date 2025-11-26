@@ -1,0 +1,30 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: argocd
+  namespace: argocd
+  labels:
+    cluster: minikube
+    app: argocd
+spec:
+  project: argocd-root
+  source:
+    repoURL: https://github.com/rezakaramad/charts
+    targetRevision: main
+    path: charts/argo-cd
+
+  syncPolicy:
+    syncOptions:
+    - ApplyOutOfSyncOnly=true 
+
+  destination:
+    name: https://kubernetes.default.svc
+    namespace: argocd
+
+  ignoreDifferences:
+    - group: ""
+      kind: ConfigMap
+      name: argocd-cm
+      namespace: argocd
+      jsonPointers:
+        - /data/url
