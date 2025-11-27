@@ -21,7 +21,7 @@ spec:
 
   template:
     metadata:
-      name: '{{ if .number }}petcare-resources-pr-{{ .number }}{{ else }}{{ .tenantName }}{{ end }}'
+      name: '{{ if .number }}petcare-resources-pr-{{ .number }}{{ else }}{{ .tenantName }}-resources{{ end }}'
     spec:
       project: default
       source:
