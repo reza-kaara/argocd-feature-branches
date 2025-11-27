@@ -9,27 +9,9 @@ spec:
   generators:
     - list:
         elements:
-          - name: petcare
+          - appName: petcare
             namespace: petcare
             targetRevision: main
-        template:
-          metadata:
-            name: '{{ .name }}'
-          spec:
-            project: default
-            source:
-              repoURL: https://github.com/rezakaramad/petcare.git
-              targetRevision: '{{ .targetRevision }}'
-              path: charts/petcare
-            destination:
-              server: https://kubernetes.default.svc
-              namespace: '{{ .namespace }}'
-            syncPolicy:
-              automated:
-                prune: true
-                selfHeal: true
-              syncOptions:
-                - CreateNamespace=true
 
     - pullRequest:
         github:
@@ -37,21 +19,22 @@ spec:
           repo: petcare
           appSecretName: github-app
         requeueAfterSeconds: 120
-        template:
-          metadata:
-            name: 'petcare-pr-{{ .number }}'
-          spec:
-            project: default
-            source:
-              repoURL: https://github.com/rezakaramad/petcare.git
-              targetRevision: '{{ .head_sha }}'
-              path: charts/petcare
-            destination:
-              server: https://kubernetes.default.svc
-              namespace: 'petcare-pr-{{ .number }}'
-            syncPolicy:
-              automated:
-                prune: true
-                selfHeal: true
-              syncOptions:
-                - CreateNamespace=true
+
+  template:
+    metadata:
+      name: '{{ if .number }}petcare-pr-{{ .number }}{{ else }}{{ .appName }}{{ end }}'
+    spec:
+      project: default
+      source:
+        repoURL: https://github.com/rezakaramad/petcare.git
+        targetRevision: '{{ if .number }}{{ .head_sha }}{{ else }}{{ .targetRevision }}{{ end }}'
+        path: charts/petcare
+      destination:
+        server: https://kubernetes.default.svc
+        namespace: '{{ if .number }}petcare-pr-{{ .number }}{{ else }}{{ .namespace }}{{ end }}'
+      syncPolicy:
+        automated:
+          prune: true
+          selfHeal: true
+        syncOptions:
+          - CreateNamespace=true
