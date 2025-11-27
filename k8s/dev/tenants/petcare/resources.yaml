@@ -1,0 +1,45 @@
+apiVersion: argoproj.io/v1alpha1
+kind: ApplicationSet
+metadata:
+  name: petcare
+  namespace: argocd
+spec:
+  goTemplate: true
+
+  generators:
+    - list:
+        elements:
+          - tenantName: petcare
+            instance: petcare
+
+    - pullRequest:
+        github:
+          owner: rezakaramad
+          repo: petcare
+          appSecretName: github-app
+        requeueAfterSeconds: 120
+
+  template:
+    metadata:
+      name: '{{ if .number }}petcare-pr-{{ .number }}{{ else }}{{ .tenantName }}{{ end }}'
+    spec:
+      project: default
+      source:
+        repoURL: https://github.com/rezakaramad/charts.git
+        targetRevision: main
+        path: charts/tenant-resources
+        helm:
+          values: |
+            tenant:
+              name: "{{ .tenantName }}"
+              instance: {{ if .number }}"petcare-pr-{{ .number }}"{{ else }}"{{ .instance }}"{{ end }}
+              permittedRepos:
+                - https://github.com/rezakaramad/petcare.git
+      destination:
+        server: https://kubernetes.default.svc
+        namespace: '{{ if .number }}petcare-pr-{{ .number }}{{ else }}{{ .instance }}{{ end }}'
+      syncPolicy:
+        automated:
+          prune: true
+          selfHeal: true
+
