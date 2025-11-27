@@ -29,6 +29,11 @@ spec:
         repoURL: https://github.com/rezakaramad/petcare.git
         targetRevision: '{{ if .number }}{{ .head_sha }}{{ else }}{{ .targetRevision }}{{ end }}'
         path: charts/petcare
+        helm:
+          values: |
+            image:
+              repository: {{ if .number }}"ghcr.io/rezakaramad/petcare-preview"{{ else }}"ghcr.io/rezakaramad/petcare"{{ end }}
+              tag: {{ if .number }}"pr-{{ .number }}-{{ .head_sha }}"{{ else }}"latest"{{ end }}
       destination:
         server: https://kubernetes.default.svc
         namespace: '{{ if .number }}petcare-pr-{{ .number }}{{ else }}{{ .namespace }}{{ end }}'
