@@ -24,7 +24,7 @@ spec:
     metadata:
       name: '{{ if .number }}petcare-pr-{{ .number }}{{ else }}{{ .appName }}{{ end }}'
     spec:
-      project: plt-tenant
+      project: '{{ if .number }}"petcare-pr-{{ .number }}"{{ else }}"{{ .instance }}"{{ end }}'
       source:
         repoURL: https://github.com/rezakaramad/petcare.git
         targetRevision: '{{ if .number }}{{ .head_sha }}{{ else }}{{ .targetRevision }}{{ end }}'
