@@ -23,7 +23,7 @@ spec:
     metadata:
       name: '{{ if .number }}petcare-builder-pr-{{ .number }}{{ else }}{{ .tenantName }}-builder{{ end }}'
     spec:
-      project: plt-cluster
+      project: '{{ if .number }}"petcare-pr-{{ .number }}"{{ else }}"{{ .instance }}"{{ end }}'
       source:
         repoURL: https://github.com/rezakaramad/charts.git
         targetRevision: main
