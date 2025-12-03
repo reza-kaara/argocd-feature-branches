@@ -31,7 +31,7 @@ spec:
         helm:
           values: |
             tenant:
-              name: "{{ .tenantName }}"
+              name: {{ .tenantName }}
               instance: {{ if .number }}"petcare-pr-{{ .number }}"{{ else }}"{{ .instance }}"{{ end }}
               permittedRepos:
                 - https://github.com/rezakaramad/petcare.git
