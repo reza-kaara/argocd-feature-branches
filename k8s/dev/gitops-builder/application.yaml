@@ -1,27 +1,20 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: plt-argocd
+  name: gitops-builder
   namespace: argocd
   labels:
     cluster: minikube
     app: argocd
 spec:
-  project: plt-cluster
+  project: platform-system
   source:
     repoURL: https://github.com/rezakaramad/charts
     targetRevision: main
-    path: charts/argocd
+    path: charts/gitops-builder
   destination:
     server: https://kubernetes.default.svc
     namespace: argocd
-  ignoreDifferences:
-    - group: ""
-      kind: ConfigMap
-      name: argocd-cm
-      namespace: argocd
-      jsonPointers:
-        - /data/url
   syncPolicy:
     syncOptions:
     - ApplyOutOfSyncOnly=true 

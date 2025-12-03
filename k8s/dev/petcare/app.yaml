@@ -3,6 +3,8 @@ kind: ApplicationSet
 metadata:
   name: petcare
   namespace: argocd
+  annotations:
+    argocd.argoproj.io/sync-wave: "1"
 spec:
   goTemplate: true
 
@@ -24,7 +26,7 @@ spec:
     metadata:
       name: '{{ if .number }}petcare-pr-{{ .number }}{{ else }}{{ .appName }}{{ end }}'
     spec:
-      project: plt-tenant
+      project: '{{ if .number }}petcare-pr-{{ .number }}{{ else }}{{ .appName }}{{ end }}'
       source:
         repoURL: https://github.com/rezakaramad/petcare.git
         targetRevision: '{{ if .number }}{{ .head_sha }}{{ else }}{{ .targetRevision }}{{ end }}'

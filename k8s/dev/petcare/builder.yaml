@@ -1,8 +1,10 @@
 apiVersion: argoproj.io/v1alpha1
 kind: ApplicationSet
 metadata:
-  name: plt-petcare-builder
+  name: petcare-builder
   namespace: argocd
+  annotations:
+    argocd.argoproj.io/sync-wave: "0"
 spec:
   goTemplate: true
 
@@ -23,7 +25,7 @@ spec:
     metadata:
       name: '{{ if .number }}petcare-builder-pr-{{ .number }}{{ else }}{{ .tenantName }}-builder{{ end }}'
     spec:
-      project: plt-cluster
+      project: tenant-system
       source:
         repoURL: https://github.com/rezakaramad/charts.git
         targetRevision: main
@@ -31,9 +33,9 @@ spec:
         helm:
           values: |
             tenant:
-              name: "{{ .tenantName }}"
+              name: {{ .tenantName }}
               instance: {{ if .number }}"petcare-pr-{{ .number }}"{{ else }}"{{ .instance }}"{{ end }}
-              permittedRepos:
+              repos:
                 - https://github.com/rezakaramad/petcare.git
       destination:
         server: https://kubernetes.default.svc
@@ -42,4 +44,3 @@ spec:
         automated:
           prune: true
           selfHeal: true
-
